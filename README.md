@@ -1,36 +1,135 @@
-# 🚀 Surge Rule Sets
+Surge Rule Set
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Build Status](https://img.shields.io/badge/Surge-Compatible-blue.svg)](https://nssurge.com/)
-[![Last Update](https://img.shields.io/badge/Last_Update-2026--04-brightgreen.svg)]()
+一份适用于 Surge for iOS/macOS 的精细化网络规则集，整合主流域名分流、广告拦截、隐私防护、区域访问等规则，实现智能网络分流，提升网络访问效率与使用安全性，兼容Surge iOS、Surge Mac全版本。
 
-一个精简、高效、且实时更新的 Surge 规则集，旨在提供最丝滑的上网体验。
+规则特色
 
----
+• 智能分流：精准区分国内、国外网络请求，自动选择最优节点，兼顾访问速度与稳定性
 
-## 🌟 核心特色
-- **极速响应**：基于 Domain Set 优化，在大规模规则下依然保持极低延迟。
-- **精准分流**：细化流媒体、社交、开发工具及金融应用的分流逻辑。
-- **去广告增强**：整合了隐私追踪屏蔽，深度净化网页与 App。
-- **自动更新**：每日由脚本自动抓取并去重。
+• 全面拦截：覆盖移动端、桌面端常见广告、跟踪、恶意域名，杜绝弹窗广告与隐私泄露
 
----
+• 隐私防护：屏蔽大数据跟踪、行为分析、隐私窃取类域名，保护个人上网隐私
 
-## 🛠 配置指南
+• 轻量化：规则精简无冗余，不占用过多系统资源，不影响网络连接速度
 
-### 1. 快速引入
-将以下代码复制到你的 Surge 配置文件的 `[Rule]` 模块下方：
+• 持续更新：定期维护规则列表，同步新增广告域名、分流域名，适配最新网络环境
 
-```text
-# --- [My Rule Sets] ---
-# 社交媒体 (Telegram, Twitter等)
-RULE-SET,[https://raw.githubusercontent.com/YOUR_USER/Surge/main/Social.list,PROXY](https://raw.githubusercontent.com/YOUR_USER/Surge/main/Social.list,PROXY)
+• 兼容友好：纯DOMAIN、DOMAIN-SUFFIX、DOMAIN-KEYWORD规则，兼容Surge所有规则语法
 
-# 全球流媒体 (Netflix, Disney+等)
-RULE-SET,[https://raw.githubusercontent.com/YOUR_USER/Surge/main/Streaming.list,Media](https://raw.githubusercontent.com/YOUR_USER/Surge/main/Streaming.list,Media)
+规则分类
 
-# 广告拦截
-RULE-SET,[https://raw.githubusercontent.com/YOUR_USER/Surge/main/AdBlock.list,REJECT](https://raw.githubusercontent.com/YOUR_USER/Surge/main/AdBlock.list,REJECT)
+本规则集包含以下核心规则模块，可按需单独引用或整体使用：
 
-# 最终兜底
-FINAL,DIRECT
+1. 分流规则（Domain.list）
+
+• 国内常用网站、APP、服务域名，直接走直连（DIRECT）
+
+• 海外主流网站、社交、媒体、技术服务域名，走代理（PROXY）
+
+• 常见CDN、镜像、加速域名优化分流，避免访问卡顿
+
+2. 广告拦截规则（AdBlock.list）
+
+• 全网通用广告域名、恶意广告联盟、弹窗广告域名拦截
+
+• 移动端APP内置广告、网页广告、视频前置广告域名屏蔽
+
+• 去除无痕广告、隐私广告跟踪，净化上网环境
+
+3. 隐私防护规则（Privacy.list）
+
+• 屏蔽大数据分析、用户行为跟踪、设备信息采集域名
+
+• 拦截第三方统计、广告归因、跨站跟踪类请求
+
+• 防护恶意挖矿、钓鱼、木马关联域名
+
+4. 特殊规则（Special.list）
+
+• 游戏、金融、政企类专属域名分流优化
+
+• 屏蔽非法、违规、恶意网站域名
+
+• 常见内网、本地服务域名直连规则
+
+快速使用
+
+一、一键导入（推荐）
+
+1. 打开Surge，进入「规则」页面
+
+2. 点击右上角「+」，选择「从URL导入规则集」
+
+3. 粘贴对应规则集远程链接，开启「自动更新」
+
+4. 导入完成后，将规则集拖动到规则列表顶部，优先生效
+
+二、手动配置（Surge配置文件）
+
+在Surge配置文件（.conf）中，通过RULE-SET字段引用远程规则，示例如下：
+# 引用分流规则
+RULE-SET, https://raw.githubusercontent.com/xxx/Surge-Rule-Set/main/Domain.list, DIRECT
+# 引用广告拦截规则
+RULE-SET, https://raw.githubusercontent.com/xxx/Surge-Rule-Set/main/AdBlock.list, REJECT
+# 引用隐私防护规则
+RULE-SET, https://raw.githubusercontent.com/xxx/Surge-Rule-Set/main/Privacy.list, REJECT
+# 引用特殊规则
+RULE-SET, https://raw.githubusercontent.com/xxx/Surge-Rule-Set/main/Special.list, PROXY
+
+# 默认规则（最后添加）
+FINAL, PROXY
+三、本地导入
+
+1. 下载本项目所有.list规则文件
+
+2. 打开Surge，进入「规则-规则集」，点击「导入文件」选择本地规则
+
+3. 配置规则执行策略，完成本地部署
+
+规则优先级说明
+
+1. 规则集优先级：特殊规则 > 广告拦截规则 > 隐私防护规则 > 分流规则
+
+2. 单条规则优先级：DOMAIN > DOMAIN-SUFFIX > DOMAIN-KEYWORD
+
+3. 建议将REJECT类规则放在顶部，避免广告、跟踪请求先走代理
+
+更新说明
+
+• 规则集每周自动更新1次，修复失效域名、新增拦截/分流规则
+
+• 更新时无需手动重新导入，开启自动更新后Surge会自动同步
+
+• 重大更新会在项目Issue中同步，可关注获取最新改动
+
+兼容说明
+
+• 支持系统：iOS 13.0+ / macOS 10.15+
+
+• 支持Surge版本：Surge iOS 4.0+ / Surge Mac 4.0+
+
+• 不兼容Surge GO、其他代理工具，仅适用于官方Surge客户端
+
+注意事项
+
+1. 导入规则后，建议重启Surge生效全部规则
+
+2. 若出现部分网站无法访问、功能异常，可临时关闭对应规则集排查问题
+
+3. 请勿随意修改规则优先级，避免导致分流失效、广告拦截无效
+
+4. 本规则仅用于个人网络优化，禁止用于非法用途
+
+5. 部分国内金融、政务类APP强制要求直连，规则已默认优化，无需额外修改
+
+问题反馈
+
+• 如遇到规则失效、广告拦截不全、正常网站误拦截等问题，可提交Issue反馈
+
+• 反馈时请注明：设备系统、Surge版本、异常域名/APP、具体问题
+
+• 欢迎提交优质规则建议，共同完善规则集
+
+许可证
+
+本项目基于 MIT 许可证开源，仅供个人学习使用，请勿用于商业用途。
